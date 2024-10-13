@@ -1,0 +1,159 @@
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+body {
+    font-family: Arial, sans-serif;
+    background-color: #f8f9fa;
+}
+
+.navbar {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background-color: #d88c48;
+    padding: 15px;
+    color: white;
+    font-size: 1.5rem;
+}
+
+.navbar .logo {
+    font-weight: bold;
+}
+
+.nav-icons i {
+    color: white;
+    font-size: 1.5rem;
+    margin-left: 15px;
+    cursor: pointer;
+}
+
+/* Grid Layout */
+.grid-container {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+    padding: 20px;
+}
+
+.forms-container {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+/* Form styling */
+.form-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.form-container h3 {
+    font-size: 1.25rem;
+    margin-bottom: 10px;
+}
+
+.form-container form label {
+    font-size: 1rem;
+    margin-bottom: 5px;
+    display: block;
+}
+
+.form-container input,
+.form-container select,
+.form-container textarea {
+    width: 100%;
+    padding: 10px;
+    margin-bottom: 15px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+/* Output Section */
+.output-container {
+    background-color: #fff;
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+.output-container label {
+    font-size: 1rem;
+    margin-bottom: 5px;
+    display: block;
+}
+
+#output-field {
+    width: 100%;
+    height: 400px; /* Set a fixed height */
+    padding: 10px;
+    border: 1px solid #ccc;
+    border-radius: 5px;
+    font-size: 1rem;
+    resize: none; /* Disable resizing */
+    overflow-y: hidden; /* Prevent vertical scrolling */
+    overflow-x: auto; /* Enable horizontal scrolling */
+    white-space: pre-wrap; /* Maintain whitespace formatting */
+}
+
+/* Button styling */
+.form-container button {
+    background-color: #d88c48;
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    cursor: pointer;
+    border-radius: 5px;
+    font-size: 1rem;
+}
+
+.form-container button:hover {
+    background-color: #c67b3c;
+}
+
+.button-link {
+    display: inline-block;
+    padding: 10px 15px;
+    margin-top: 10px;
+    color: #fff;
+    background-color: #007BFF; /* Button color */
+    border-radius: 5px;
+    text-decoration: none; /* Remove underline */
+    text-align: center; /* Center text */
+}
+
+.button-link:hover {
+    background-color: #0056b3; /* Darker shade on hover */
+    color: #fff; /* Text color on hover */
+}
+
+/* Password container styling */
+.password-container {
+    display: flex;
+    align-items: center; /* Center the input and icon vertically */
+    margin-bottom: 15px; /* Spacing below the password field */
+}
+
+/* Styling for the password input field */
+#client-2fa {
+    flex: 1; /* Allow the input to take up available space */
+    padding-right: 40px; /* Adjust padding for icon spacing */
+    margin-right: 5px; /* Space between input and icon */
+}
+
+/* Styling for the eye icon */
+#toggle-password {
+    color: #007BFF; /* Color of the icon */
+    font-size: 1.2em; /* Size of the icon */
+    cursor: pointer; /* Pointer cursor on hover */
+    transition: color 0.3s; /* Smooth transition for color change */
+}
+
+#toggle-password:hover {
+    color: #0056b3; /* Darker shade on hover */
+}

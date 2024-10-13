@@ -1,0 +1,31 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login | ColdCraft</title>
+    <link rel="stylesheet" href="{% static 'styles-login.css' %}">
+</head>
+<body>
+    <div class="login-container">
+        <div class="login-form">
+            <h2>Login</h2>
+            <p>Don't have an account? <a href="{% url 'register' %}">Register</a></p>
+            <form action="{% url 'login' %}" method="POST">
+                {% csrf_token %}
+                <input type="email" name="email" placeholder="Email" required>
+                <input type="password" name="password" placeholder="Password" required>
+
+                {% if error %}
+                    <p style="color: red;">{{ error }}</p>  <!-- Display error message -->
+                {% endif %}
+
+                <a href="#" class="forgot-password">Forgot password?</a>
+
+                <button type="submit">Login</button>
+            </form>
+        </div>
+    </div>
+</body>
+</html>

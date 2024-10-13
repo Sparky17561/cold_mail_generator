@@ -1,0 +1,67 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Links Page | ColdCraft</title>
+    <link rel="stylesheet" href="{% static 'styles-links.css' %}">
+</head>
+<body>
+    <div class="header">
+        <h1>ColdCraft</h1>
+        <div class="icons">
+            <span>⚙️</span>
+            <span>👤</span>
+            <span>⚙️</span>
+        </div>
+    </div>
+
+    <div class="container">
+        <h2>Manage Links</h2>
+        <h2>User Information</h2>
+        <p><strong>Username:</strong> {{ user.username }}</p>
+        <p><strong>Email:</strong> {{ user.email }}</p>
+    
+        <!-- Form to add new links -->
+        <form class="add-link-form" method="POST">
+            {% csrf_token %}
+            <input type="text" id="job-role" name="job_role" placeholder="Job Role" required>
+            <input type="url" id="url" name="url" placeholder="URL" required>
+            <button type="submit">Add</button>
+        </form>
+
+        <h3>Active Links</h3>
+
+        <!-- Table to display existing links -->
+        <table class="links-table">
+            <thead>
+                <tr>
+                    <th>Job Role</th>
+                    <th>URL</th>
+                    <th>Added on</th>
+                    <th>Action</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for link in links %}
+                <tr>
+                    <td>{{ link.job_role }}</td>
+                    <td><a href="{{ link.url }}">{{ link.url }}</a></td>
+                    <td>{{ link.added_on }}</td>
+                    <td>
+                        <!-- Form to delete a link -->
+                        <form method="POST">
+                            {% csrf_token %}
+                            <input type="hidden" name="delete_link_id" value="{{ link.id }}">
+                            <button type="submit">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+
+</body>
+</html>

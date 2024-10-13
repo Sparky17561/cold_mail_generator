@@ -1,0 +1,216 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>ColdCraft - Cold Email Generator</title>
+    <link rel="stylesheet" href="{% static 'styles.css' %}">
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar">
+        <div class="logo">ColdCraft</div>
+        <div class="nav-icons">
+            <a href="#"><i class="fas fa-arrow-left"></i></a>
+            <a href="#"><i class="fas fa-user"></i></a>
+            <i class="fas fa-cog" id="settings-icon"></i>
+        </div>
+    </nav>
+
+    <!-- Main Content -->
+    <div class="index-container">
+        <div id="user-info-container">
+            {% if user_info %}
+                <p><strong>Username:</strong> {{ user_info.username }}</p>
+                <p><strong>Email:</strong> {{ user_info.email }}</p>
+            {% else %}
+                <p>No user information available.</p>
+            {% endif %}
+        </div>
+    </div>
+
+    <!-- Grid Layout Container for Generate and Send Forms -->
+    <div class="grid-container">
+        <div class="forms-container">
+            <div class="form-container">
+                <form id="generate-form" method="POST" action="{% url 'generate_email' %}">
+                    {% csrf_token %}
+                    <h3>Generate Email</h3>
+                    <label for="job-url">Enter job description URL:</label>
+                    <input type="url" name="job_url" id="job-url" placeholder="Enter job description URL" required>
+                    
+                    <label for="custom-prompt">Enter custom prompt you want to be highlighted:</label>
+                    <textarea name="custom_prompt" id="custom-prompt" placeholder="Enter custom prompt" required></textarea>
+                    
+                    <button type="button" id="generate-btn">Generate</button>
+                </form>
+            </div>
+
+            <div class="form-container">
+                <form id="send-form">
+                    <h3>Send Email</h3>
+                    <label for="target-email">Enter target Mail:</label>
+                    <input type="email" id="target-email" placeholder="Enter target mail" required>
+
+                    <h4>Optional: User Email Credentials</h4>
+                    <label for="client-mail">Your Email:</label>
+                    <input type="email" id="client-mail" value="{{ client_data.email }}" readonly>
+
+                    <label for="client-2fa">Your Email Password (or 2FA):</label>
+                    <div class="password-container">
+                        <input type="password" id="client-2fa" value="{{ client_data.two_fa_pass }}" readonly>
+                        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20210917145551/eye.png" width="20" height="20" style="cursor: pointer; margin-left: -30px;" id="toggle-password">
+                    </div>
+
+                    <a href="{% url 'add_client' %}" class="button-link">Change Email Credentials</a>
+
+                    <button type="button" id="send-btn">Send</button>
+                </form>
+            </div>
+        </div>
+
+        <div class="output-container">
+            <label for="output-field">Generated Email Output:</label>
+            <div id="output-field" placeholder="Generated email will appear here" contenteditable="true" style="border: 1px solid #ccc; padding: 10px; height: auto;"></div>
+        </div>
+    </div>
+
+    <script>
+       
+    // User and client data directly from Django context
+    const userName = "{{ client_data.name }}";
+    const userCity = "{{ client_data.city }}";
+    const userLinkedIn = "{{ client_data.linkedin }}";
+
+    // Function to get CSRF token from cookies
+    function getCookie(name) {
+        let cookieValue = null;
+        if (document.cookie && document.cookie !== '') {
+            const cookies = document.cookie.split(';');
+            for (let i = 0; i < cookies.length; i++) {
+                const cookie = cookies[i].trim();
+                if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                    cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                    break;
+                }
+            }
+        }
+        return cookieValue;
+    }
+
+    // Event listener for the generate button
+    document.getElementById('generate-btn').addEventListener('click', async function() {
+        const jobUrl = document.getElementById('job-url').value.trim();  // Trim whitespace
+        const customPrompt = document.getElementById('custom-prompt').value.trim();  // Trim whitespace
+
+        const outputField = document.getElementById('output-field');
+        
+        // Validate inputs
+        if (!jobUrl) {
+            alert("Job description URL cannot be empty.");  // Alert for empty job URL
+            return;
+        }
+        if (!customPrompt) {
+            alert("Custom prompt cannot be empty.");  // Alert for empty custom prompt
+            return;
+        }
+
+        outputField.innerHTML = "Generating email...";
+
+        // Append user details to the custom prompt
+        const enhancedCustomPrompt = `${customPrompt}. My name is ${userName}, I am from ${userCity}, and here is my LinkedIn profile: ${userLinkedIn}`;
+
+        try {
+            const response = await fetch('/generate-email/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({
+                    job_url: jobUrl,
+                    custom_prompt: enhancedCustomPrompt // Pass the enhanced custom prompt
+                })
+            });
+
+            const data = await response.json(); // Get the response data first
+
+            if (response.ok) {
+                if (data.generated_email) {
+                    const formattedEmail = data.generated_email.replace(/\n/g, "<br>");
+                    outputField.innerHTML = formattedEmail;
+                } else {
+                    outputField.innerHTML = "Error: Generated email is undefined.";
+                }
+            } else {
+                outputField.innerHTML = "Error: " + (data.error || "An unknown error occurred.");
+            }
+        } catch (error) {
+            outputField.innerHTML = "Error: " + error.message;
+        }
+    });
+
+    // Event listener for the send button
+    document.getElementById('send-btn').addEventListener('click', async function() {
+        const targetEmail = document.getElementById('target-email').value.trim();  // Trim whitespace
+        const clientMail = document.getElementById('client-mail').value;
+        const client2fa = document.getElementById('client-2fa').value;
+        const outputField = document.getElementById('output-field');
+
+        if (!targetEmail) {
+            alert("Please enter a target email.");  // Show alert for email not entered
+            return;
+        }
+
+        // Get the current content of the output field (including any edits)
+        const emailContent = outputField.innerHTML.replace(/<br>/g, '\n');  // Convert HTML breaks to newlines
+
+        try {
+            const response = await fetch('/send-email/', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                    'X-CSRFToken': getCookie('csrftoken')
+                },
+                body: JSON.stringify({ 
+                    target_email: targetEmail, 
+                    email_content: emailContent,
+                    client_mail: clientMail,  // Use provided client email
+                    client_2fa: client2fa    // Use provided client password or 2FA
+                })
+            });
+
+            const data = await response.json(); // Get the response data first
+
+            if (response.ok) {
+                alert("Email sent successfully!");  // Show alert for successful email sending
+            } else {
+                alert("Error: " + (data.error || "Failed to send email."));  // Show alert for errors
+            }
+        } catch (error) {
+            alert("Error: " + error.message);  // Show alert for any caught errors
+        }
+    });
+
+    // Toggle password visibility for the email credentials
+    const togglePassword = document.querySelector('#toggle-password');
+    const passwordField = document.querySelector('#client-2fa');
+
+    togglePassword.addEventListener('click', function (e) {
+        // Toggle the type attribute 
+        const type = passwordField.getAttribute('type') === 'password' ? 'text' : 'password';
+        passwordField.setAttribute('type', type);
+
+        // Toggle the eye slash icon 
+        if (togglePassword.src.match("https://media.geeksforgeeks.org/wp-content/uploads/20210917150049/eyeslash.png")) {
+            togglePassword.src = "https://media.geeksforgeeks.org/wp-content/uploads/20210917145551/eye.png";
+        } else {
+            togglePassword.src = "https://media.geeksforgeeks.org/wp-content/uploads/20210917150049/eyeslash.png";
+        }
+    });
+</script>
+
+</body>
+</html>

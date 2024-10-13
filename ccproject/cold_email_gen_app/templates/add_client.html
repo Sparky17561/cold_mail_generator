@@ -1,0 +1,100 @@
+{% load static %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Add Client Details</title>
+    <link rel="stylesheet" href="{% static 'profile.css' %}">
+</head>
+<body>
+    <nav class="navbar">
+        <div class="logo">ColdCraft</div>
+        <div class="nav-icons">
+            <a href="#"><i class="fas fa-arrow-left"></i></a>
+            <a href="#"><i class="fas fa-user"></i></a>
+            <i class="fas fa-cog" id="settings-icon"></i>
+        </div>
+    </nav>
+
+    <div class="profile-container">
+        <h2>Add Client Details</h2>
+        <form id="client-form" method="post">
+            {% csrf_token %}
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="name">Name</label>
+                    <input type="text" id="name" name="name" value="{{ name }}" required>
+                </div>
+                <div class="form-group">
+                    <label for="email">Email</label>
+                    <input type="email" id="email" name="email" value="{{ email }}" readonly required>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="city">City</label>
+                    <input type="text" id="city" name="city" value="{{ city }}">
+                </div>
+                <div class="form-group">
+                    <label for="two_fa_pass">2FA Password</label>
+                    <div class="password-container">
+                        <input type="password" id="two_fa_pass" name="two_fa_pass" value="{{ two_fa_pass }}" required>
+                        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20210917145551/eye.png" 
+                             width="20" height="20" 
+                             style="display: inline; margin-left: -30px; vertical-align: middle" 
+                             id="togglePassword">
+                    </div>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="groq_api_key">Groq Cloud API Key</label>
+                    <div class="password-container">
+                        <input type="password" id="groq_api_key" name="groq_api_key" value="{{ groq_api_key }}" required>
+                        <img src="https://media.geeksforgeeks.org/wp-content/uploads/20210917145551/eye.png" 
+                             width="20" height="20" 
+                             style="display: inline; margin-left: -30px; vertical-align: middle" 
+                             id="toggleAPIKey">
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label for="username">Username</label>
+                    <input type="text" id="username" name="username" value="{{ username }}" readonly>
+                </div>
+            </div>
+            <div class="form-row">
+                <div class="form-group">
+                    <label for="linkedin">LinkedIn</label>
+                    <input type="text" id="linkedin" name="linkedin" value="{{ linkedin }}">
+                </div>
+            </div>
+            <button type="submit" class="submit-btn">Save</button>
+        </form>
+    </div>
+
+    <script>
+        const togglePassword = document.querySelector('#togglePassword');
+        const password = document.querySelector('#two_fa_pass');
+
+        togglePassword.addEventListener('click', function () {
+            const type = password.getAttribute('type') === 'password' ? 'text' : 'password';
+            password.setAttribute('type', type);
+            togglePassword.src = togglePassword.src.includes('eyeslash') 
+                ? "https://media.geeksforgeeks.org/wp-content/uploads/20210917145551/eye.png" 
+                : "https://media.geeksforgeeks.org/wp-content/uploads/20210917150049/eyeslash.png";
+        });
+
+        const toggleAPIKey = document.querySelector('#toggleAPIKey');
+        const apiKey = document.querySelector('#groq_api_key');
+
+        toggleAPIKey.addEventListener('click', function () {
+            const type = apiKey.getAttribute('type') === 'password' ? 'text' : 'password';
+            apiKey.setAttribute('type', type);
+            toggleAPIKey.src = toggleAPIKey.src.includes('eyeslash') 
+                ? "https://media.geeksforgeeks.org/wp-content/uploads/20210917145551/eye.png" 
+                : "https://media.geeksforgeeks.org/wp-content/uploads/20210917150049/eyeslash.png";
+        });
+    </script>
+</body>
+</html>
