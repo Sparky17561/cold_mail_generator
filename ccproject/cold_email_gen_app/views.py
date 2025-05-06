@@ -326,7 +326,7 @@ def extract_jobs(cleaned_text, groq_api_key):
     llm = ChatGroq(
         temperature=0,
         groq_api_key=groq_api_key,
-        model_name="llama-3.1-70b-versatile"
+        model_name="llama-3.3-70b-versatile"
     )
     
     # Split the cleaned_text into smaller chunks if it's too long
@@ -340,6 +340,7 @@ def extract_jobs(cleaned_text, groq_api_key):
     try:
         json_parser = JsonOutputParser()
         res = json_parser.parse(res.content)
+        print(res)
     except OutputParserException as e:
         return {"error": str(e)}
 
@@ -367,7 +368,7 @@ def write_mail(job, custom_prompt):
     llm = ChatGroq(
         temperature=0,
         groq_api_key=groq_api_key,
-        model_name="llama-3.1-70b-versatile"
+        model_name="llama-3.3-70b-versatile"
     )
     
     job_description_with_prompt = job['description']  # Use the job description from extracted job

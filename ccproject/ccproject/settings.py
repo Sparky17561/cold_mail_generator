@@ -144,7 +144,7 @@ EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
 EMAIL_HOST_USER = 'studentjamdar@gmail.com'
-EMAIL_HOST_PASSWORD = 'tqlh gjsy mqij ojmq'
+EMAIL_HOST_PASSWORD = 'eqwm muqz puib cqic'
 DEFAULT_FROM_EMAIL = 'studentjamdar@gmail.com'
 
 

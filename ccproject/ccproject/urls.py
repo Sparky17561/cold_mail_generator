@@ -7,8 +7,7 @@ from cold_email_gen_app.views import (
     logout_view, 
     manage_links_view,
     generate_email_view,
-    send_email
-    
+    send_email,
 )
 from django.contrib import admin
 
