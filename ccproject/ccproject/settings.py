@@ -14,6 +14,10 @@ from pathlib import Path
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve().parent.parent
+# In settings.py
+import os
+from dotenv import load_dotenv
+load_dotenv(dotenv_path=os.path.join(BASE_DIR, 'cold_email_gen_app', '.env'))
 
 
 # Quick-start development settings - unsuitable for production
@@ -143,8 +147,6 @@ EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_PORT = 587
 EMAIL_USE_TLS = True
-EMAIL_HOST_USER = 'studentjamdar@gmail.com'
-EMAIL_HOST_PASSWORD = 'eqwm muqz puib cqic'
-DEFAULT_FROM_EMAIL = 'studentjamdar@gmail.com'
+
 
 

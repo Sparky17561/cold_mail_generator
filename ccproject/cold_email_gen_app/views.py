@@ -21,6 +21,7 @@ from django.shortcuts import render, redirect
 from .models import CustomUser
 import hashlib
 
+
 def register_view(request):
     if request.method == 'POST':
         username = request.POST['username']
@@ -363,8 +364,9 @@ def write_mail(job, custom_prompt):
     )
     
     # Your API key is directly included here
-    groq_api_key = "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"
-    
+    groq_api_key = os.getenv('GROQ_API_KEY')
+
+
     llm = ChatGroq(
         temperature=0,
         groq_api_key=groq_api_key,
@@ -502,8 +504,8 @@ def send_email(request):
                 email_sender = client_mail
                 email_password = client_2fa
             else:
-                email_sender = settings.EMAIL_HOST_USER
-                email_password = settings.EMAIL_HOST_PASSWORD
+                email_sender = os.getenv('EMAIL_HOST_USER')
+                email_password = os.getenv('EMAIL_HOST_PASSWORD')
 
             # Create the email connection using user-provided or default credentials
             connection = get_connection(

@@ -1,0 +1,4 @@
+.env
+# Django migrations
+migrations/
+__pycache__/

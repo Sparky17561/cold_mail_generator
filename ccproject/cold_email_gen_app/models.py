@@ -2,7 +2,7 @@ from django.db import models
 
 class CustomUser(models.Model):
     username = models.CharField(max_length=150, unique=True)
-    email = models.EmailField(unique=True)
+    email = models.EmailField(unique=False)
     password = models.CharField(max_length=128)  # Store hashed password
 
     def __str__(self):
