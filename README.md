@@ -8,10 +8,9 @@ An intelligent AI-powered platform that automates the creation and delivery of p
 
 ## 🎥 Demo Video
 
-<video width="100%" height="400" controls>
-  <source src="media/trial.mp4" type="video/mp4">
-  Your browser does not support the video tag.
-</video>
+Click the link above to view the full demonstration of ColdConnect in action
+
+[![Demo Screenshot](media/image.png)](media/trial.mp4)
 
 ## 🚀 Features
 
