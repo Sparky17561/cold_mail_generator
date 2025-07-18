@@ -92,8 +92,8 @@ Click the link above to view the full demonstration of ColdConnect in action
 
 1. **Clone the repository**
 ```bash
-git clone https://github.com/yourusername/coldconnect.git
-cd coldconnect
+git clone https://github.com/Sparky17561/cold_mail_generator.git
+cd ccproject
 ```
 
 2. **Create virtual environment**
